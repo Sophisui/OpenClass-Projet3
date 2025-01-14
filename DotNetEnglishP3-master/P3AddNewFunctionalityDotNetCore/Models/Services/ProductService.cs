@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
                 products.Add(new ProductViewModel
                 {
                     Id = product.Id,
-                    Stock = product.Quantity.ToString(),
+                    Quantity = product.Quantity.ToString(),
                     Price = product.Price.ToString(CultureInfo.InvariantCulture),
                     Name = product.Name,
                     Description = product.Description,
@@ -93,40 +94,30 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
         // TODO this is an example method, remove it and perform model validation using data annotations
         public List<string> CheckProductModelErrors(ProductViewModel product)
         {
+            // Liste pour stocker les erreurs de validation
             List<string> modelErrors = new List<string>();
-            if (product.Name == null || string.IsNullOrWhiteSpace(product.Name))
-            {
-                modelErrors.Add(_localizer["MissingName"]);
-            }
 
-            if (product.Price == null || string.IsNullOrWhiteSpace(product.Price))
-            {
-                modelErrors.Add(_localizer["MissingPrice"]);
-            }
+            // Liste pour stocker les résultats de la validation
+            List<ValidationResult> validationResults = new List<ValidationResult>();
 
-            if (!Double.TryParse(product.Price, out double pc))
-            {
-                modelErrors.Add(_localizer["PriceNotANumber"]);
-            }
-            else
-            {
-                if (pc <= 0)
-                    modelErrors.Add(_localizer["PriceNotGreaterThanZero"]);
-            }
+            // Crée un contexte de validation pour l'objet produit
+            ValidationContext validationContext = new ValidationContext(product);
 
-            if (product.Stock == null || string.IsNullOrWhiteSpace(product.Stock))
-            {
-                modelErrors.Add(_localizer["MissingQuantity"]);
-            }
+            // Essayer de valider l'objet avec toutes ses propriétés
+            bool isValid = Validator.TryValidateObject(
+                product,
+                validationContext,
+                validationResults,
+                validateAllProperties: true
+            );
 
-            if (!int.TryParse(product.Stock, out int qt))
+            // Si le modèle n'est pas valide, ajouter les messages d'erreur à la liste
+            if (isValid == false)
             {
-                modelErrors.Add(_localizer["StockNotAnInteger"]);
-            }
-            else
-            {
-                if (qt <= 0)
-                    modelErrors.Add(_localizer["StockNotGreaterThanZero"]);
+                foreach (ValidationResult validationResult in validationResults)
+                {
+                    modelErrors.Add(validationResult.ErrorMessage);
+                }
             }
 
             return modelErrors;
@@ -144,7 +135,7 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
             {
                 Name = product.Name,
                 Price = double.Parse(product.Price),
-                Quantity = Int32.Parse(product.Stock),
+                Quantity = Int32.Parse(product.Quantity),
                 Description = product.Description,
                 Details = product.Details
             };
@@ -156,8 +147,16 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
             // TODO what happens if a product has been added to a cart and has been later removed from the inventory ?
             // delete the product form the cart by using the specific method
             // => the choice is up to the student
-            _cart.RemoveLine(GetProductById(id));
 
+            //Choix de conserver le produit dans le panier mais de le noter comme out of stock
+
+            // Récupère le produit via l'ID
+            var product = GetProductById(id);
+
+            // Marque le produit comme hors stock dans le panier
+            //_cart.MarkAsOutOfStock(product);  // Méthode à implémenter dans Cart.cs pour marquer le produit 
+
+            // Supprime le produit de l'inventaire
             _productRepository.DeleteProduct(id);
         }
     }
