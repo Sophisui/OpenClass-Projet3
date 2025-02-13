@@ -1,6 +1,13 @@
 ﻿using System.Reflection;
 using Xunit;
 using System.Resources;
+using P3AddNewFunctionalityDotNetCore.Models.ViewModels;
+using P3AddNewFunctionalityDotNetCore.Models.Services;
+using P3AddNewFunctionalityDotNetCore.Models;
+using Moq;
+using P3AddNewFunctionalityDotNetCore.Models.Repositories;
+using Microsoft.Extensions.Localization;
+using System.Linq;
 
 namespace P3AddNewFunctionalityDotNetCore.Tests
 {
@@ -22,70 +29,155 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 Assembly.GetExecutingAssembly());
         }
 
-        [Fact]
-        public void MissingStock_ShouldReturnExpectedValue()
+        public void MissingName()
         {
             // Arrange
-            string expectedValue = resourceManager.GetString("MissingStock");
+            ProductViewModel productViewModel = new ProductViewModel();
+            productViewModel.Name = string.Empty;
+            productViewModel.Quantity = "30";
+            productViewModel.Price = "12";
+
+            Mock<ICart> cartMoq = new Mock<ICart>();
+            Mock<IProductRepository> productMoq = new Mock<IProductRepository>();
+            Mock<IOrderRepository> orderMoq = new Mock<IOrderRepository>();
+            Mock<IStringLocalizer<ProductService>> localiserMoq = new Mock<IStringLocalizer<ProductService>>();
+            ProductService productService = new ProductService(cartMoq.Object, productMoq.Object, orderMoq.Object, localiserMoq.Object);
 
             // Act
-            string actualValue = resourceCulture.MissingStock;
+            var result = productService.CheckProductModelErrors(productViewModel);
 
             // Assert
-            Assert.Equal(expectedValue, actualValue);
+            Assert.Equal(result.FirstOrDefault(), "MissingName");
         }
 
         [Fact]
-        public void PriceNotANumber_ShouldReturnExpectedValue()
+        public void MissingQuantity()
         {
             // Arrange
-            string expectedValue = resourceManager.GetString("PriceNotANumber");
+            ProductViewModel productViewModel = new ProductViewModel();
+            productViewModel.Name = "Name";
+            productViewModel.Quantity = string.Empty;
+            productViewModel.Price = "12";
+
+            Mock<ICart> cartMoq = new Mock<ICart>();
+            Mock<IProductRepository> productMoq = new Mock<IProductRepository>();
+            Mock<IOrderRepository> orderMoq = new Mock<IOrderRepository>();
+            Mock<IStringLocalizer<ProductService>> localiserMoq = new Mock<IStringLocalizer<ProductService>>();
+            ProductService productService = new ProductService(cartMoq.Object, productMoq.Object, orderMoq.Object, localiserMoq.Object);
 
             // Act
-            string actualValue = resourceCulture.PriceNotANumber;
+            var result = productService.CheckProductModelErrors(productViewModel);
 
             // Assert
-            Assert.Equal(expectedValue, actualValue);
+            Assert.Equal(result.FirstOrDefault(), "MissingQuantity");
         }
 
-        [Fact]
-        public void PriceNotGreaterThanZero_ShouldReturnExpectedValue()
+        public void QuantityNotGreaterThanZero()
         {
             // Arrange
-            string expectedValue = resourceManager.GetString("PriceNotGreaterThanZero");
+            ProductViewModel productViewModel = new ProductViewModel();
+            productViewModel.Name = "Name";
+            productViewModel.Quantity = "0";
+            productViewModel.Price = "12";
+
+            Mock<ICart> cartMoq = new Mock<ICart>();
+            Mock<IProductRepository> productMoq = new Mock<IProductRepository>();
+            Mock<IOrderRepository> orderMoq = new Mock<IOrderRepository>();
+            Mock<IStringLocalizer<ProductService>> localiserMoq = new Mock<IStringLocalizer<ProductService>>();
+            ProductService productService = new ProductService(cartMoq.Object, productMoq.Object, orderMoq.Object, localiserMoq.Object);
 
             // Act
-            string actualValue = resourceCulture.PriceNotGreaterThanZero;
+            var result = productService.CheckProductModelErrors(productViewModel);
 
             // Assert
-            Assert.Equal(expectedValue, actualValue);
+            Assert.Equal(result.FirstOrDefault(), "QuantityNotGreaterThanZero");
         }
 
-        [Fact]
-        public void StockNotAnInteger_ShouldReturnExpectedValue()
+        public void QuantityNotAnInteger()
         {
             // Arrange
-            string expectedValue = resourceManager.GetString("StockNotAnInteger");
+            ProductViewModel productViewModel = new ProductViewModel();
+            productViewModel.Name = "Name";
+            productViewModel.Quantity = "ABCD";
+            productViewModel.Price = "12";
+
+            Mock<ICart> cartMoq = new Mock<ICart>();
+            Mock<IProductRepository> productMoq = new Mock<IProductRepository>();
+            Mock<IOrderRepository> orderMoq = new Mock<IOrderRepository>();
+            Mock<IStringLocalizer<ProductService>> localiserMoq = new Mock<IStringLocalizer<ProductService>>();
+            ProductService productService = new ProductService(cartMoq.Object, productMoq.Object, orderMoq.Object, localiserMoq.Object);
 
             // Act
-            string actualValue = resourceCulture.StockNotAnInteger;
+            var result = productService.CheckProductModelErrors(productViewModel);
 
             // Assert
-            Assert.Equal(expectedValue, actualValue);
+            Assert.Equal(result.FirstOrDefault(), "QuantityNotAnInteger");
         }
 
-        [Fact]
-        public void StockNotGreaterThanZero_ShouldReturnExpectedValue()
+        public void MissingPrice()
         {
             // Arrange
-            string expectedValue = resourceManager.GetString("StockNotGreaterThanZero");
+            ProductViewModel productViewModel = new ProductViewModel();
+            productViewModel.Name = "Name";
+            productViewModel.Quantity = "30";
+            productViewModel.Price = string.Empty;
+
+            Mock<ICart> cartMoq = new Mock<ICart>();
+            Mock<IProductRepository> productMoq = new Mock<IProductRepository>();
+            Mock<IOrderRepository> orderMoq = new Mock<IOrderRepository>();
+            Mock<IStringLocalizer<ProductService>> localiserMoq = new Mock<IStringLocalizer<ProductService>>();
+            ProductService productService = new ProductService(cartMoq.Object, productMoq.Object, orderMoq.Object, localiserMoq.Object);
 
             // Act
-            string actualValue = resourceCulture.StockNotGreaterThanZero;
+            var result = productService.CheckProductModelErrors(productViewModel);
 
             // Assert
-            Assert.Equal(expectedValue, actualValue);
+            Assert.Equal(result.FirstOrDefault(), "MissingPrice");
         }
+
+        public void PriceNotGreaterThanZero()
+        {
+            // Arrange
+            ProductViewModel productViewModel = new ProductViewModel();
+            productViewModel.Name = "Name";
+            productViewModel.Quantity = "30";
+            productViewModel.Price = "0";
+
+            Mock<ICart> cartMoq = new Mock<ICart>();
+            Mock<IProductRepository> productMoq = new Mock<IProductRepository>();
+            Mock<IOrderRepository> orderMoq = new Mock<IOrderRepository>();
+            Mock<IStringLocalizer<ProductService>> localiserMoq = new Mock<IStringLocalizer<ProductService>>();
+            ProductService productService = new ProductService(cartMoq.Object, productMoq.Object, orderMoq.Object, localiserMoq.Object);
+
+            // Act
+            var result = productService.CheckProductModelErrors(productViewModel);
+
+            // Assert
+            Assert.Equal(result.FirstOrDefault(), "PriceNotGreaterThanZero");
+        }
+
+        public void PriceNotANumber()
+        {
+            // Arrange
+            ProductViewModel productViewModel = new ProductViewModel();
+            productViewModel.Name = "Name";
+            productViewModel.Quantity = "30";
+            productViewModel.Price = "ABCD";
+
+            Mock<ICart> cartMoq = new Mock<ICart>();
+            Mock<IProductRepository> productMoq = new Mock<IProductRepository>();
+            Mock<IOrderRepository> orderMoq = new Mock<IOrderRepository>();
+            Mock<IStringLocalizer<ProductService>> localiserMoq = new Mock<IStringLocalizer<ProductService>>();
+            ProductService productService = new ProductService(cartMoq.Object, productMoq.Object, orderMoq.Object, localiserMoq.Object);
+
+            // Act
+            var result = productService.CheckProductModelErrors(productViewModel);
+
+            // Assert
+            Assert.Equal(result.FirstOrDefault(), "PriceNotANumber");
+        }
+
+
 
         // TODO write test methods to ensure a correct coverage of all possibilities
     }
