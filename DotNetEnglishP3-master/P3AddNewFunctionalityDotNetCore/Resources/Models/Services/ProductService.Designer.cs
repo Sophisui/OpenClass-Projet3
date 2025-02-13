@@ -81,9 +81,9 @@ namespace ProductServiceDesigner.cs {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string MissingStock {
+        public static string MissingQuantity {
             get {
-                return ResourceManager.GetString("MissingStock", resourceCulture);
+                return ResourceManager.GetString("MissingQuantity", resourceCulture);
             }
         }
         
@@ -108,18 +108,18 @@ namespace ProductServiceDesigner.cs {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string StockNotAnInteger {
+        public static string QuantityNotAnInteger {
             get {
-                return ResourceManager.GetString("StockNotAnInteger", resourceCulture);
+                return ResourceManager.GetString("QuantityNotAnInteger", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string StockNotGreaterThanZero {
+        public static string QuantityNotGreaterThanZero {
             get {
-                return ResourceManager.GetString("StockNotGreaterThanZero", resourceCulture);
+                return ResourceManager.GetString("QuantityNotGreaterThanZero", resourceCulture);
             }
         }
     }
