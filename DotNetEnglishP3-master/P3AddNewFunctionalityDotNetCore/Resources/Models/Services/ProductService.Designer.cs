@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProductServiceDesigner.cs {
+namespace P3AddNewFunctionalityDotNetCore.Resources.Models.Services
+{
     using System;
     
     
@@ -108,18 +109,18 @@ namespace ProductServiceDesigner.cs {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string QuantityNotAnInteger {
+        public static string StockNotAnInteger {
             get {
-                return ResourceManager.GetString("QuantityNotAnInteger", resourceCulture);
+                return ResourceManager.GetString("StockNotAnInteger", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string QuantityNotGreaterThanZero {
+        public static string StockNotGreaterThanZero {
             get {
-                return ResourceManager.GetString("QuantityNotGreaterThanZero", resourceCulture);
+                return ResourceManager.GetString("StockNotGreaterThanZero", resourceCulture);
             }
         }
     }

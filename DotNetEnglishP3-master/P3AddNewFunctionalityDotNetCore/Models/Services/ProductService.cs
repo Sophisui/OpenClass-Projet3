@@ -28,14 +28,14 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
         }
         public List<ProductViewModel> GetAllProductsViewModel()
         {
-             
+
             IEnumerable<Product> productEntities = GetAllProducts();
             return MapToViewModel(productEntities);
         }
 
         private static List<ProductViewModel> MapToViewModel(IEnumerable<Product> productEntities)
         {
-            List <ProductViewModel> products = new List<ProductViewModel>();
+            List<ProductViewModel> products = new List<ProductViewModel>();
             foreach (Product product in productEntities)
             {
                 products.Add(new ProductViewModel
@@ -84,7 +84,7 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
         }
         public void UpdateProductQuantities()
         {
-            Cart cart = (Cart) _cart;
+            Cart cart = (Cart)_cart;
             foreach (CartLine line in cart.Lines)
             {
                 _productRepository.UpdateProductStocks(line.Product.Id, line.Quantity);
@@ -134,7 +134,7 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
             Product productEntity = new Product
             {
                 Name = product.Name,
-                Price = double.Parse(product.Price),
+                Price = double.Parse(product.Price, CultureInfo.InvariantCulture),
                 Quantity = Int32.Parse(product.Quantity),
                 Description = product.Description,
                 Details = product.Details
@@ -148,16 +148,15 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
             // delete the product form the cart by using the specific method
             // => the choice is up to the student
 
-            //Choix de conserver le produit dans le panier mais de le noter comme out of stock
+            //// 1. Récupère le produit via l'ID
+            //var product = GetProductById(id);
+            //if (product == null) return;
 
-            // Récupère le produit via l'ID
-            var product = GetProductById(id);
+            //// 2. Supprime le produit du panier s’il y est
+            //_cartLines.RemoveProduct(product);
 
-            // Marque le produit comme hors stock dans le panier
-            //_cart.MarkAsOutOfStock(product);  // Méthode à implémenter dans Cart.cs pour marquer le produit 
-
-            // Supprime le produit de l'inventaire
-            _productRepository.DeleteProduct(id);
+            //// 3. Supprime le produit de l'inventaire
+            //_productRepository.DeleteProduct(id);
         }
     }
 }

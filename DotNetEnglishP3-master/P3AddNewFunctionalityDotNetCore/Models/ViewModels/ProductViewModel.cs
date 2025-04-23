@@ -15,14 +15,14 @@ namespace P3AddNewFunctionalityDotNetCore.Models.ViewModels
 
         public string Details { get; set; }
 
-        [Required(ErrorMessage = "MissingQuantity")] //Quantity obligatoire
-        [Range(1, int.MaxValue, ErrorMessage = "QuantityNotGreaterThanZero")] //Price doit etre superieur a 0 (1 minimum)
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "QuantityNotAnInteger")] //Price doit est un nombre
+        [Required(ErrorMessageResourceName = "MissingQuantity", ErrorMessageResourceType = (typeof(Resources.Models.Services.ProductService)))]//Quantity obligatoire
+        [RegularExpression(@"^[0-9]+$", ErrorMessageResourceName = "StockNotAnInteger", ErrorMessageResourceType = (typeof(Resources.Models.Services.ProductService)))] //Price doit est un nombre
+        [Range(1, int.MaxValue, ErrorMessageResourceName = "StockNotGreaterThanZero", ErrorMessageResourceType = (typeof(Resources.Models.Services.ProductService)))] //Price doit etre superieur a 0 (1 minimum)
         public string Quantity { get; set; } //Change "stock" to "quantity"
 
-        [Required(ErrorMessage = "MissingPrice")] //Price obligatoire
-        [Range(0.01, double.MaxValue, ErrorMessage = "PriceNotGreaterThanZero")] //Price doit etre superieur a 0 (ou un decimal entre 0 et 1)
-        [DataType(DataType.Currency, ErrorMessage = "PriceNotANumber")] //DataType = Currency : Nombre obligatoire
+        [Required(ErrorMessageResourceName = "MissingPrice", ErrorMessageResourceType = (typeof(Resources.Models.Services.ProductService)))]//Price obligatoire
+        [RegularExpression(@"^\s*[0-9]\d*([,.]\d+)?\s*$", ErrorMessageResourceName = "PriceNotANumber", ErrorMessageResourceType = (typeof(Resources.Models.Services.ProductService)))] //DataType = Currency : Nombre obligatoire
+        [Range(0.01, double.MaxValue, ErrorMessageResourceName = "PriceNotGreaterThanZero", ErrorMessageResourceType = (typeof(Resources.Models.Services.ProductService)))] //Price doit etre superieur a 0 (ou un decimal entre 0 et 1)
         public string Price { get; set; }
     }
 }

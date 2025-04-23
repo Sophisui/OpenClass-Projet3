@@ -12,12 +12,14 @@ namespace P3AddNewFunctionalityDotNetCore.Controllers
         private readonly ICart _cart;
         private readonly IOrderService _orderService;
         private readonly IStringLocalizer<OrderController> _localizer;
+        private readonly IProductService _productService;
 
-        public OrderController(ICart cart, IOrderService service, IStringLocalizer<OrderController> localizer)
+        public OrderController(ICart cart, IOrderService service, IStringLocalizer<OrderController> localizer, IProductService productService)
         {
             _cart = cart;
             _orderService = service;
             _localizer = localizer;
+            _productService = productService;
         }
 
         public ViewResult Index()
@@ -32,6 +34,13 @@ namespace P3AddNewFunctionalityDotNetCore.Controllers
             {
                 ModelState.AddModelError("", _localizer["CartEmpty"]);
             }
+
+            var products = _productService.GetAllProducts();
+            foreach (var line in ((Cart)_cart).Lines)
+            {
+                ModelState.AddModelError("", _localizer[""]);
+            }
+
             if (ModelState.IsValid)
             {
                 order.Lines = ((Cart) _cart)?.Lines.ToArray();

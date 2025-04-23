@@ -29,6 +29,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 Assembly.GetExecutingAssembly());
         }
 
+        [Fact]
         public void MissingName()
         {
             // Arrange
@@ -47,7 +48,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             var result = productService.CheckProductModelErrors(productViewModel);
 
             // Assert
-            Assert.Equal(result.FirstOrDefault(), "MissingName");
+            Assert.Equal(result.FirstOrDefault(), "Please enter a name");
         }
 
         [Fact]
@@ -69,9 +70,10 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             var result = productService.CheckProductModelErrors(productViewModel);
 
             // Assert
-            Assert.Equal(result.FirstOrDefault(), "MissingQuantity");
+            Assert.Equal(result.FirstOrDefault(), "Please enter a stock value");
         }
 
+        [Fact]
         public void QuantityNotGreaterThanZero()
         {
             // Arrange
@@ -90,9 +92,10 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             var result = productService.CheckProductModelErrors(productViewModel);
 
             // Assert
-            Assert.Equal(result.FirstOrDefault(), "QuantityNotGreaterThanZero");
+            Assert.Contains("The stock must greater than zero", result);
         }
 
+        [Fact]
         public void QuantityNotAnInteger()
         {
             // Arrange
@@ -111,9 +114,10 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             var result = productService.CheckProductModelErrors(productViewModel);
 
             // Assert
-            Assert.Equal(result.FirstOrDefault(), "QuantityNotAnInteger");
+            Assert.Contains("The value entered for the stock must be a integer", result);
         }
 
+        [Fact]
         public void MissingPrice()
         {
             // Arrange
@@ -132,9 +136,10 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             var result = productService.CheckProductModelErrors(productViewModel);
 
             // Assert
-            Assert.Equal(result.FirstOrDefault(), "MissingPrice");
+            Assert.Equal(result.FirstOrDefault(), "Please enter a price");
         }
 
+        [Fact]
         public void PriceNotGreaterThanZero()
         {
             // Arrange
@@ -153,9 +158,10 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             var result = productService.CheckProductModelErrors(productViewModel);
 
             // Assert
-            Assert.Equal(result.FirstOrDefault(), "PriceNotGreaterThanZero");
+            Assert.True(result.Any(o => o == "The price must be greater than zero"));
         }
 
+        [Fact]
         public void PriceNotANumber()
         {
             // Arrange
@@ -174,7 +180,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             var result = productService.CheckProductModelErrors(productViewModel);
 
             // Assert
-            Assert.Equal(result.FirstOrDefault(), "PriceNotANumber");
+            Assert.Equal(result.FirstOrDefault(), "The value entered for the price must be a number");
         }
 
 
