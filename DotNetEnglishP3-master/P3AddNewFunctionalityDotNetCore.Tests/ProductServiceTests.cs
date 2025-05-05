@@ -182,9 +182,5 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             // Assert
             Assert.Equal(result.FirstOrDefault(), "The value entered for the price must be a number");
         }
-
-
-
-        // TODO write test methods to ensure a correct coverage of all possibilities
     }
 }

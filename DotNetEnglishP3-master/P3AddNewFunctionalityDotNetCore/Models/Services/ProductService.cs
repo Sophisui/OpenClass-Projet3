@@ -148,15 +148,12 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
             // delete the product form the cart by using the specific method
             // => the choice is up to the student
 
-            //// 1. Récupère le produit via l'ID
-            //var product = GetProductById(id);
-            //if (product == null) return;
+            // 1. Récupère le produit via l'ID
+            var product = GetProductById(id);
+            if (product == null) return;
 
-            //// 2. Supprime le produit du panier s’il y est
-            //_cartLines.RemoveProduct(product);
-
-            //// 3. Supprime le produit de l'inventaire
-            //_productRepository.DeleteProduct(id);
+            // 2. Supprime le produit du panier s’il y est
+            _cart.RemoveLine(product);
         }
     }
 }
