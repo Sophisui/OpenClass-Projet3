@@ -63,7 +63,7 @@ public class ProductServiceTestsIntegration
         // Assert.Single(context.Product);
 
         // Act
-        productService.DeleteProduct(product.Id);
+        productService.DeleteProductFromDatabase(product.Id);
         var deletedProduct = context.Product.FirstOrDefault(p => p.Id == product.Id);
 
         // Assert

@@ -155,5 +155,10 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
             // 2. Supprime le produit du panier s’il y est
             _cart.RemoveLine(product);
         }
+        public void DeleteProductFromDatabase(int id)
+        {
+            _productRepository.DeleteProduct(id);
+        }
+
     }
 }
